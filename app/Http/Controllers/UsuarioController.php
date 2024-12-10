@@ -2,15 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User; // Modelo de usuario
+use App\Models\Usuario; // Modelo de usuario
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class UsuarioController extends Controller
 {
+    public function verificar()
+    {
+        return view('usuario.verificar'); // Carga la vista en 'resources/views/usuario/verificar.blade.php'
+    }   
+
     /**
      * Display a listing of the resource.
      */
+    public function perfil()
+    {
+        // Aquí puedes pasar datos del usuario autenticado, si es necesario
+        $usuario = auth()->user(); // Obtiene al usuario autenticado
+        return view('usuario.usuario', compact('usuario'));
+    }
+
+    public function mostrarIniciarSesion()
+    {
+        return view('usuario.iniciar_sesion'); // Asegúrate de que el nombre y ubicación de la vista sean correctos
+    }
     public function mostrarRegistro()
     {
         return view('usuario.registro');
@@ -35,7 +53,11 @@ class UsuarioController extends Controller
         $usuario->contrasena = Hash::make($request->contrasena);
         $usuario->role = 'usuario'; // Valor predeterminado
         $usuario->save();
+        Auth::login($usuario);
 
-        return redirect()->route('usuario.registro')->with('success', 'Usuario registrado correctamente.');
+        $usuario->sendEmailVerificationNotification();
+
+
+        return redirect()->route('usuario.verificar')->with('success', 'Usuario registrado correctamente.');
     }
 }
