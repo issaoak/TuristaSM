@@ -63,11 +63,15 @@ class UsuarioController extends Controller
         'correo' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
     ]);
 }
-public function logout()
-{
-    Auth::logout(); // Cierra la sesión del usuario
-    return redirect('/'); // Redirige a la página de inicio
-}
+    public function logout()
+        {
+            Auth::logout(); // Cierra la sesión del usuario
+            request()->session()->invalidate(); // Invalida la sesión actual
+            request()->session()->regenerateToken(); // Regenera el token CSRF por seguridad
+
+        return redirect('/'); // Redirige a la página principal
+        }
+
 
 
 

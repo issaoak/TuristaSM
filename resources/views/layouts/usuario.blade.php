@@ -16,9 +16,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('usuario.perfil') }}">Perfil</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('logout') }}">Cerrar Sesión</a>
-                    </li>
+                   
                 </ul>
             </nav>
         </div>

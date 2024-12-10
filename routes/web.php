@@ -22,6 +22,7 @@ Route::resource('admin/vuelos', VueloController::class)->names('admin.vuelos');
 Route::resource('admin/destinos', DestinoController::class)->names('admin.destinos');
 Route::resource('admin/hoteles', HotelController::class)->names('admin.hoteles');
 
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 Route::get('/registro', [UsuarioController::class, 'mostrarRegistro'])->name('usuario.registro');
 Route::post('/registro', [UsuarioController::class, 'registrar']);
 

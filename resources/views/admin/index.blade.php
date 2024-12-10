@@ -33,6 +33,13 @@
                 </div>
             </div>
         </div>
+        <div class="text-center mt-5">
+        <!-- Botón de cerrar sesión -->
+        <form action="{{ route('admin.logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+        </form>
+    </div>
     </div>
 </div>
 @endsection

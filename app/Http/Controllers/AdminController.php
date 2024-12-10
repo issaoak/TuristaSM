@@ -15,6 +15,14 @@ class AdminController extends Controller
         abort(403, 'Acceso no autorizado'); 
 
     }
+    public function logout()
+    {
+        Auth::logout(); // Cierra la sesión del usuario
+        request()->session()->invalidate(); // Invalida la sesión actual
+        request()->session()->regenerateToken(); // Regenera el token CSRF por seguridad
+
+        return redirect('/'); // Redirige a la página principal
+    }
 
     public function vuelos()
     {
