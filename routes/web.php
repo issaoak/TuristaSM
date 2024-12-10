@@ -15,7 +15,7 @@ use App\Http\Controllers\VerificacionCorreoController;
 Route::get('/', [InicioController::class, 'index'])->name('inicio');
 //Rutas administrador
 
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+//Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 Route::get('/admin/vuelos', [AdminController::class, 'vuelos'])->name('admin.vuelos');
 
 Route::resource('admin/vuelos', VueloController::class)->names('admin.vuelos');
@@ -24,11 +24,32 @@ Route::resource('admin/hoteles', HotelController::class)->names('admin.hoteles')
 
 Route::get('/registro', [UsuarioController::class, 'mostrarRegistro'])->name('usuario.registro');
 Route::post('/registro', [UsuarioController::class, 'registrar']);
-Route::get('/iniciar-sesion', [UsuarioController::class, 'mostrarIniciarSesion'])->name('usuario.iniciar_sesion');
 
+Route::get('/iniciar-sesion', [UsuarioController::class, 'mostrarIniciarSesion'])->name('usuario.iniciar_sesion');
+Route::post('/iniciar-sesion', [UsuarioController::class, 'procesarInicioSesion'])->name('login.post');
 Route::get('admin/destinos', [DestinoController::class, 'index'])->name('admin.destinos.index');
 
-Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('usuario.perfil');
+//Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('usuario.perfil');
+
+Route::get('/admin', function () {
+    // Verificar si el usuario tiene rol de administrador
+    if (Auth::check() && Auth::user()->role === 'administrador') {
+        return app(AdminController::class)->index();
+    }
+    abort(403, 'Acceso no autorizado'); // Mostrar error si no es administrador
+})->name('admin.index');
+
+// Ruta del perfil del usuario
+Route::get('/perfil', function () {
+    // Verificar si el usuario tiene rol de usuario
+    if (Auth::check() && Auth::user()->role === 'usuario') {
+        return app(UsuarioController::class)->perfil();
+    }
+    abort(403, 'Acceso no autorizado'); // Mostrar error si no es usuario
+})->name('usuario.perfil');
+//Route::get('/admin', [AdminController::class, 'index'])->middleware('auth')->name('admin.index');
+//Route::get('/perfil', [UsuarioController::class, 'perfil'])->middleware('auth')->name('usuario.perfil');
+
 
 Route::get('/verificar', [UsuarioController::class, 'verificar'])->middleware('auth')->name('usuario.verificar');
 

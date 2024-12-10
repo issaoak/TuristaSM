@@ -48,5 +48,11 @@ class Usuario extends Authenticatable implements MustVerifyEmail
     {
         $this->attributes['contrasena'] = bcrypt($value);
     }
+    public function getAuthPassword()
+    {
+        return $this->contrasena; // Campo de contraseña
+    }
+  
+
     //
 }
